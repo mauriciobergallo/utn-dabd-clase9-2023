@@ -1,0 +1,164 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-10">
+      <form #productForm="ngForm" (ngSubmit)="submitForm(productForm)">
+        <div class="form-group">
+          <label>ID</label>&nbsp;
+          <label>{{ product?.id }}</label>
+        </div>
+        <div class="form-group">
+          <label for="inputProductName">Nombre</label>
+          <input
+            type="text"
+            id="inputProductName"
+            placeholder="Nombre del producto"
+            name="productName"
+            [(ngModel)]="product!.name"
+            #productNameField="ngModel"
+            required
+            minlength="5"
+            [ngClass]="{ 'form-control': true, invalid: true }"
+          />
+          <small
+            id="nameRequiredErrorMessage"
+            class="form-text text-muted error-message"
+            *ngIf="
+              !productNameField.valid && productNameField.getError('required')
+            "
+          >
+            El nombre del producto es requerido
+          </small>
+          <small
+            id="nameMinlengthErrorMessage"
+            class="form-text text-muted error-message"
+            *ngIf="
+              !productNameField.valid && productNameField.getError('minlength')
+            "
+          >
+            El nombre debe tener al menos 5 caracteres
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="textProductDescription">Descripción</label>
+          <textarea
+            id="textProductDescription"
+            rows="3"
+            placeholder="Descripción del producto"
+            name="productDescription"
+            [(ngModel)]="product!.description"
+            #productDescriptionField="ngModel"
+            required
+            minlength="15"
+            [ngClass]="{ 'form-control': true, invalid: true }"
+          ></textarea>
+          <small
+            id="descriptionRequiredErrorMessage"
+            class="form-text text-muted error-message"
+            *ngIf="
+              !productDescriptionField.valid &&
+              productDescriptionField.getError('required')
+            "
+          >
+            La descripción del producto es requerido
+          </small>
+          <small
+            id="descriptionMinlengthErrorMessage"
+            class="form-text text-muted error-message"
+            *ngIf="
+              !productDescriptionField.valid &&
+              productDescriptionField.getError('minlength')
+            "
+          >
+            La descripción debe tener al menos 15 caracteres
+          </small>
+        </div>
+        <div class="form-group">
+          <h3>Inventarios</h3>
+          <div class="form-group">
+            <label for="inputInventoryLocation">Lugar</label>
+            <input
+              type="text"
+              id="inputInventoryLocation"
+              placeholder="Nombre del lugar o depósito"
+              name="locationName"
+              [(ngModel)]="product!.inventories[0].location"
+              #inventoryLocationField="ngModel"
+              required
+              minlength="5"
+              [ngClass]="{
+                'form-control': true,
+                invalid: !inventoryLocationField.valid
+              }"
+            />
+            <small
+              id="locationRequiredErrorMessage"
+              class="form-text text-muted error-message"
+              *ngIf="
+                !inventoryLocationField.valid &&
+                inventoryLocationField.getError('required')
+              "
+            >
+              El nombre del Lugar o Deposito es requerido
+            </small>
+            <small
+              id="locationMinlengthErrorMessage"
+              class="form-text text-muted error-message"
+              *ngIf="
+                !inventoryLocationField.valid &&
+                inventoryLocationField.getError('minlength')
+              "
+            >
+              El nombre del Lugar o Deposito debe tener al menos 5 caracteres
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="inputInventoryStock">Cantidad</label>
+            <input
+              type="number"
+              id="inputInventoryStock"
+              name="inputInventoryStock"
+              [(ngModel)]="product!.inventories[0].stock"
+              #inventoryStockField="ngModel"
+              required
+              min="0"
+              max="20"
+              [ngClass]="{
+                'form-control': true,
+                invalid: !inventoryStockField.valid
+              }"
+            />
+            <small
+              id="stockRequiredErrorMessage"
+              class="form-text text-muted error-message"
+              *ngIf="
+                !inventoryStockField.valid &&
+                inventoryStockField.getError('required')
+              "
+            >
+              La cantidad o Stock es requerido
+            </small>
+            <small
+              id="stockMinMaxErrorMessage"
+              class="form-text text-muted error-message"
+              *ngIf="
+                !inventoryStockField.valid &&
+                (inventoryStockField.getError('min') ||
+                  inventoryStockField.getError('max'))
+              "
+            >
+              La cantidad o Stock debe ser entre 0 y 20
+            </small>
+          </div>
+        </div>
+        <br />
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!productForm.valid"
+        >
+          Guardar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

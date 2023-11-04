@@ -1,0 +1,272 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-10">
+      <form (ngSubmit)="submitForm()" [formGroup]="productForm">
+        <div [formGroup]="emailGroup">
+          <h3>Form Group con Validación Custom</h3>
+          <div class="form-group">
+            <label for="inputEmail">Email</label>
+            <input
+              type="text"
+              id="inputEmail"
+              placeholder="Email"
+              formControlName="email"
+              [ngClass]="{
+                'form-control': true
+              }"
+            />
+            <small
+              id="emailRequiredError"
+              class="form-text text-muted error-message"
+              *ngIf="
+                !emailGroup.get('email')!.valid &&
+                emailGroup.get('email')!.touched &&
+                emailGroup.get('email')!.getError('required')
+              "
+            >
+              El Email es requerido
+            </small>
+            <small
+              id="emailTypeError"
+              class="form-text text-muted error-message"
+              *ngIf="
+                !emailGroup.get('email')!.valid &&
+                emailGroup.get('email')!.touched &&
+                emailGroup.get('email')!.getError('email')
+              "
+            >
+              El Email tiene que ser tipo email
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="inputConfirmEmail">Confirmar Email</label>
+            <input
+              type="text"
+              id="inputConfirmEmail"
+              placeholder="Confirme el Email"
+              formControlName="confirmEmail"
+              [ngClass]="{
+                'form-control': true
+              }"
+            />
+            <small
+              id="confirmEmailRequiredError"
+              class="form-text text-muted error-message"
+              *ngIf="
+                !emailGroup.get('confirmEmail')!.valid &&
+                emailGroup.get('confirmEmail')!.touched &&
+                emailGroup.get('confirmEmail')!.getError('required')
+              "
+            >
+              El Email 2 es requerido
+            </small>
+            <small
+              id="confirmEmailTypeError"
+              class="form-text text-muted error-message"
+              *ngIf="
+                !emailGroup.get('confirmEmail')!.valid &&
+                emailGroup.get('confirmEmail')!.touched &&
+                emailGroup.get('confirmEmail')!.getError('email')
+              "
+            >
+              El Email tiene que ser tipo email
+            </small>
+          </div>
+          <small
+            id="matchingEmailValidation"
+            class="form-text text-muted error-message"
+            *ngIf="!emailGroup.valid && emailGroup.getError('match-email')"
+          >
+            Los emails no coinciden
+          </small>
+        </div>
+        <br />
+        <br />
+        <h2>Producto</h2>
+        <div class="form-group">
+          <label>ID</label>&nbsp;
+          <label>{{ productId }}</label>
+        </div>
+        <div class="form-group">
+          <label for="inputProductName">Nombre</label>
+          <input
+            type="text"
+            id="inputProductName"
+            placeholder="Nombre del producto"
+            formControlName="name"
+            [ngClass]="{
+              'form-control': true,
+              'input-not-valid':
+                !productForm.controls['name'].valid &&
+                productForm.controls['name'].touched
+            }"
+          />
+          <small
+            id="nameRequiredErrorMessage"
+            class="form-text text-muted error-message"
+            *ngIf="
+              !productForm.controls['name'].valid &&
+              productForm.controls['name'].touched &&
+              productForm.controls['name'].getError('required')
+            "
+          >
+            El nombre del producto es requerido
+          </small>
+          <small
+            id="nameMinlengthErrorMessage"
+            class="form-text text-muted error-message"
+            *ngIf="
+              !productForm.controls['name'].valid &&
+              productForm.controls['name'].touched &&
+              productForm.controls['name'].getError('minlength')
+            "
+          >
+            El nombre debe tener al menos 3 caracteres
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="textProductDescription">Descripción</label>
+          <textarea
+            id="textProductDescription"
+            rows="3"
+            placeholder="Descripción del producto"
+            formControlName="description"
+            [ngClass]="{
+              'form-control': true,
+              'input-not-valid':
+                !productForm.controls['description'].valid &&
+                productForm.controls['description'].touched
+            }"
+          ></textarea>
+          <small
+            id="descriptionRequiredErrorMessage"
+            class="form-text text-muted error-message"
+            *ngIf="
+              !productForm.controls['description'].valid &&
+              productForm.controls['description'].touched &&
+              productForm.controls['description'].getError('required')
+            "
+          >
+            La descripción del producto es requerido
+          </small>
+          <small
+            id="descriptionMinlengthErrorMessage"
+            class="form-text text-muted error-message"
+            *ngIf="
+              !productForm.controls['description'].valid &&
+              productForm.controls['description'].touched &&
+              productForm.controls['description'].getError('minlength')
+            "
+          >
+            La descripción del debe tener al menos 15 caracteres
+          </small>
+        </div>
+        <br />
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="addInventory('', 0)"
+        >
+          Agregar Stock
+        </button>
+        <br />
+        <div class="form-group">
+          <h3>Inventarios</h3>
+          <div formArrayName="inventories">
+            <div
+              [formGroupName]="i"
+              *ngFor="let inventory of inventories.controls; let i = index"
+            >
+              <div class="form-group">
+                <label attr.for="{{ 'inputInventoryLocation' + i }}"
+                  >Lugar</label
+                >
+                <input
+                  type="text"
+                  id="{{ 'inputInventoryLocation' + i }}"
+                  placeholder="Nombre del lugar o depósito"
+                  formControlName="location"
+                  [ngClass]="{
+                    'form-control': true,
+                    'input-not-valid':
+                      !inventory.get('location')!.valid &&
+                      inventory.get('location')!.touched
+                  }"
+                />
+                <small
+                  id="{ 'requiredLocationErrorMessage' + 1 }"
+                  class="form-text text-muted error-message"
+                  *ngIf="
+                    !inventory.get('location')!.valid &&
+                    inventory.get('location')!.touched &&
+                    inventory.get('location')!.getError('required')
+                  "
+                >
+                  El nombre de la location es requerido
+                </small>
+                <small
+                  id="{ 'minengthLocationErrorMessage' + 1 }"
+                  class="form-text text-muted error-message"
+                  *ngIf="
+                    !inventory.get('location')!.valid &&
+                    inventory.get('location')!.touched &&
+                    inventory.get('location')!.getError('minlength')
+                  "
+                >
+                  El nombre de la location debe tener al menos 5 caracteres
+                </small>
+              </div>
+              <div class="form-group">
+                <label attr.for="{{ 'inputInventoryStock' + i }}"
+                  >Cantidad</label
+                >
+                <input
+                  type="number"
+                  id="{{ 'inputInventoryStock' + i }}"
+                  formControlName="stock"
+                  [ngClass]="{
+                    'form-control': true,
+                    'input-not-valid':
+                      !inventory.get('stock')!.valid &&
+                      inventory.get('stock')!.touched
+                  }"
+                />
+                <small
+                  id="{ 'requiredStockErrorMessage' + 1 }"
+                  class="form-text text-muted error-message"
+                  *ngIf="
+                    !inventory.get('stock')!.valid &&
+                    inventory.get('stock')!.touched &&
+                    inventory.get('stock')!.getError('required')
+                  "
+                >
+                  El nombre de la location es requerido
+                </small>
+                <small
+                  id="{ 'maxOrMinStockErrorMessage' + 1 }"
+                  class="form-text text-muted error-message"
+                  *ngIf="
+                    !inventory.get('stock')!.valid &&
+                    inventory.get('stock')!.touched &&
+                    (inventory.get('stock')!.getError('min') ||
+                      inventory.get('stock')!.getError('max'))
+                  "
+                >
+                  El stock debe ir de 0 a 50
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!productForm.valid"
+        >
+          Guardar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

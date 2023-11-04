@@ -1,0 +1,30 @@
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Stock Disponible</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of productList">
+        <th scope="row">{{ p.id }}</th>
+        <td>{{ p.name }}</td>
+        <td>{{ p.description }}</td>
+        <td>{{ calculateStock(p) }}</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-success"
+            [routerLink]="[p.id, 'edit']"
+          >
+            Editar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
